@@ -791,7 +791,11 @@ extern "C"
         TDEFL_MAX_HUFF_SYMBOLS_0 = 288,
         TDEFL_MAX_HUFF_SYMBOLS_1 = 32,
         TDEFL_MAX_HUFF_SYMBOLS_2 = 19,
-        TDEFL_LZ_DICT_SIZE = 32768,
+        /* BinSentry fork: LZ dictionary shrunk 32768 -> 8192 to cut the tdefl_compressor heap
+           ~72 KB (188 KB -> ~116 KB full-path) with ~0 ratio loss on our Paeth-filtered images
+           (matches are local). Mask/arrays derive from this; a smaller-window raw-deflate stream
+           still decodes on any 32 KB-window inflater. Diverges from upstream 3.1.2. */
+        TDEFL_LZ_DICT_SIZE = 8192,
         TDEFL_LZ_DICT_SIZE_MASK = TDEFL_LZ_DICT_SIZE - 1,
         TDEFL_MIN_MATCH_LEN = 3,
         TDEFL_MAX_MATCH_LEN = 258
